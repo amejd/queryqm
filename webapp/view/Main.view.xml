@@ -34,13 +34,6 @@
                     visibleInAdvancedArea="true"
                     filterType="single"
                 />
-                <!-- <sfb:ControlConfiguration
-                    id="_IDGenControlConfiguration3"
-                    key="klart"
-                    label="Categorie"
-                    visibleInAdvancedArea="true"
-                    filterType="single"
-                /> -->
             </sfb:controlConfiguration>
         </sfb:SmartFilterBar>
 
@@ -61,32 +54,19 @@
                         text="Fournisseurs"
                     />
                     <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+                    <Button id="_IDGenButton2"
+							icon="sap-icon://refresh"
+							tooltip="Effacer tous les filtres"
+							press="onClearAllFilters"/>
 					<Button id="_IDGenButton1" type="Accept" press="onExtractData" icon="sap-icon://excel-attachment"/>
                 </OverflowToolbar>
             </table:extension>
             <table:columns>
-                <!-- Lifnr -->
-                <table:Column
-                    id="columnLifnr"
-                    width="11rem"
-                >
-                    <Label
-                        id="labelLifnr"
-                        text="{i18n>Lifnr}"
-                    />
-                    <table:template>
-                        <Text
-                            id="textLifnr"
-                            text="{Lifnr}"
-                            wrapping="false"
-                        />
-                    </table:template>
-                </table:Column>
-
                 <!-- Name1 -->
                 <table:Column
                     id="columnName1"
                     width="11rem"
+                    sortProperty="Name1" filterProperty="Name1"
                 >
                     <Label
                         id="labelName1"
@@ -101,73 +81,20 @@
                     </table:template>
                 </table:Column>
 
-                <!-- Ernam -->
+                <!-- Lifnr -->
                 <table:Column
-                    id="columnErnam"
+                    id="columnLifnr"
                     width="11rem"
+                    sortProperty="Lifnr" filterProperty="Lifnr"
                 >
                     <Label
-                        id="labelErnam"
-                        text="{i18n>Ernam}"
+                        id="labelLifnr"
+                        text="{i18n>Lifnr}"
                     />
                     <table:template>
                         <Text
-                            id="textErnam"
-                            text="{Ernam}"
-                            wrapping="false"
-                        />
-                    </table:template>
-                </table:Column>
-
-                <!-- Erdat -->
-                <table:Column
-                    id="columnErdat"
-                    width="11rem"
-                >
-                    <Label
-                        id="labelErdat"
-                        text="{i18n>Erdat}"
-                    />
-                    <table:template>
-                        <Text
-                            id="textErdat"
-                            text="{path: 'Erdat', formatter: '.formatDate'}"
-                            wrapping="false"
-                        />
-                    </table:template>
-                </table:Column>
-
-                <!-- Aedat -->
-                <table:Column
-                    id="columnAedat"
-                    width="11rem"
-                >
-                    <Label
-                        id="labelAedat"
-                        text="{i18n>Aedat}"
-                    />
-                    <table:template>
-                        <Text
-                            id="textAedat"
-                            text="{path: 'Aedat', formatter: '.formatDate'}"
-                            wrapping="false"
-                        />
-                    </table:template>
-                </table:Column>
-
-                <!-- Usnam -->
-                <table:Column
-                    id="columnUsnam"
-                    width="11rem"
-                >
-                    <Label
-                        id="labelUsnam"
-                        text="{i18n>Usnam}"
-                    />
-                    <table:template>
-                        <Text
-                            id="textUsnam"
-                            text="{Usnam}"
+                            id="textLifnr"
+                            text="{Lifnr}"
                             wrapping="false"
                         />
                     </table:template>
@@ -177,6 +104,7 @@
                 <table:Column
                     id="columnCategorieFournisseur"
                     width="11rem"
+                    sortProperty="CATEGORIE_FOURNISSEUR" filterProperty="CATEGORIE_FOURNISSEUR"
                 >
                     <Label
                         id="labelCategorieFournisseur"
@@ -195,6 +123,7 @@
                 <table:Column
                     id="columnQualification"
                     width="11rem"
+                    sortProperty="QUALIFICATION" filterProperty="QUALIFICATION"
                 >
                     <Label
                         id="labelQualification"
@@ -213,6 +142,7 @@
                 <table:Column
                     id="columnEntenteQualite"
                     width="11rem"
+                    sortProperty="ENTENTE_QUALITE" filterProperty="ENTENTE_QUALITE"
                 >
                     <Label
                         id="labelEntenteQualite"
@@ -227,77 +157,82 @@
                     </table:template>
                 </table:Column>
 
-                <!-- class -->
+                <!-- Ernam -->
                 <table:Column
-                    id="columnClass"
+                    id="columnErnam"
                     width="11rem"
+                    sortProperty="Ernam" filterProperty="Ernam"
                 >
                     <Label
-                        id="labelClass"
-                        text="{i18n>class}"
+                        id="labelErnam"
+                        text="{i18n>Ernam}"
                     />
                     <table:template>
                         <Text
-                            id="textClass"
-                            text="{class}"
+                            id="textErnam"
+                            text="{Ernam}"
                             wrapping="false"
                         />
                     </table:template>
                 </table:Column>
 
-                <!-- klart -->
+                <!-- Erdat -->
                 <table:Column
-                    id="columnKlart"
+                    id="columnErdat"
                     width="11rem"
+                    sortProperty="Erdat" filterProperty="Erdat"
                 >
                     <Label
-                        id="labelKlart"
-                        text="{i18n>klart}"
+                        id="labelErdat"
+                        text="{i18n>Erdat}"
                     />
                     <table:template>
                         <Text
-                            id="textKlart"
-                            text="{klart}"
+                            id="textErdat"
+                            text="{path: 'Erdat', formatter: '.formatDate'}"
                             wrapping="false"
                         />
                     </table:template>
                 </table:Column>
 
-                <!-- Xdele -->
+                 <!-- Usnam -->
                 <table:Column
-                    id="columnXdele"
+                    id="columnUsnam"
                     width="11rem"
+                    sortProperty="Usnam" filterProperty="Usnam"
                 >
                     <Label
-                        id="labelXdele"
-                        text="{i18n>Xdele}"
+                        id="labelUsnam"
+                        text="{i18n>Usnam}"
                     />
                     <table:template>
                         <Text
-                            id="textXdele"
-                            text="{Xdele}"
+                            id="textUsnam"
+                            text="{Usnam}"
                             wrapping="false"
                         />
                     </table:template>
                 </table:Column>
 
-                <!-- Xblck -->
+                <!-- Aedat -->
                 <table:Column
-                    id="columnXblck"
+                    id="columnAedat"
                     width="11rem"
+                    sortProperty="Aedat" filterProperty="Aedat"
                 >
                     <Label
-                        id="labelXblck"
-                        text="{i18n>Xblck}"
+                        id="labelAedat"
+                        text="{i18n>Aedat}"
                     />
                     <table:template>
                         <Text
-                            id="textXblck"
-                            text="{Xblck}"
+                            id="textAedat"
+                            text="{path: 'Aedat', formatter: '.formatDate'}"
                             wrapping="false"
                         />
                     </table:template>
                 </table:Column>
+
             </table:columns>
         </table:Table>
 

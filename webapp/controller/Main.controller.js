@@ -128,6 +128,28 @@ sap.ui.define([
                 oSheet.build().finally(function () {
                     oSheet.destroy();
                 });
+            },
+            onClearAllFilters: function () {
+                // Get the table
+                const oTable = this.byId("table");
+                const oListBinding = oTable.getBinding();
+                // Clear selection
+                oTable.clearSelection();
+               
+                if (oListBinding) {
+                    oListBinding.aSorters = null;
+                    oListBinding.aFilters = null;
+                }
+
+                for (let iColCounter = 0; iColCounter < oTable.getColumns().length; iColCounter++) {
+                    oTable.getColumns()[iColCounter].setSorted(false);
+                    oTable.getColumns()[iColCounter].setFilterValue("");
+                    oTable.getColumns()[iColCounter].setFiltered(false);
+                }
+
+                // Update Binding
+                // Remove any filters
+                oListBinding.filter([]);
             }
         });
     });
