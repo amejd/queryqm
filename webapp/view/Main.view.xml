@@ -8,6 +8,7 @@
     xmlns:table="sap.ui.table"
     xmlns:l="sap.ui.layout"
     xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
 >
     <Page
         id="page"
@@ -36,7 +37,7 @@
                 />
             </sfb:controlConfiguration>
         </sfb:SmartFilterBar>
-
+        <html:a id="hiddenLink" />
         <table:Table
             id="table"
             rows="{/}"
@@ -53,12 +54,19 @@
                         id="title"
                         text="Fournisseurs"
                     />
-                    <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-                    <Button id="_IDGenButton2"
-							icon="sap-icon://refresh"
-							tooltip="Effacer tous les filtres"
-							press="onClearAllFilters"/>
-					<Button id="_IDGenButton1" type="Accept" press="onExtractData" icon="sap-icon://excel-attachment"/>
+                    <ToolbarSpacer id="_IDGenToolbarSpacer1" />
+                    <Button
+                        id="_IDGenButton2"
+                        icon="sap-icon://refresh"
+                        tooltip="Effacer tous les filtres"
+                        press="onClearAllFilters"
+                    />
+                    <Button
+                        id="_IDGenButton1"
+                        type="Accept"
+                        press="onExtractData"
+                        icon="sap-icon://excel-attachment"
+                    />
                 </OverflowToolbar>
             </table:extension>
             <table:columns>
@@ -66,7 +74,8 @@
                 <table:Column
                     id="columnName1"
                     width="11rem"
-                    sortProperty="Name1" filterProperty="Name1"
+                    sortProperty="Name1"
+                    filterProperty="Name1"
                 >
                     <Label
                         id="labelName1"
@@ -85,7 +94,8 @@
                 <table:Column
                     id="columnLifnr"
                     width="11rem"
-                    sortProperty="Lifnr" filterProperty="Lifnr"
+                    sortProperty="Lifnr"
+                    filterProperty="Lifnr"
                 >
                     <Label
                         id="labelLifnr"
@@ -104,7 +114,8 @@
                 <table:Column
                     id="columnCategorieFournisseur"
                     width="11rem"
-                    sortProperty="CATEGORIE_FOURNISSEUR" filterProperty="CATEGORIE_FOURNISSEUR"
+                    sortProperty="CATEGORIE_FOURNISSEUR"
+                    filterProperty="CATEGORIE_FOURNISSEUR"
                 >
                     <Label
                         id="labelCategorieFournisseur"
@@ -123,7 +134,8 @@
                 <table:Column
                     id="columnQualification"
                     width="11rem"
-                    sortProperty="QUALIFICATION" filterProperty="QUALIFICATION"
+                    sortProperty="QUALIFICATION"
+                    filterProperty="QUALIFICATION"
                 >
                     <Label
                         id="labelQualification"
@@ -142,7 +154,8 @@
                 <table:Column
                     id="columnEntenteQualite"
                     width="11rem"
-                    sortProperty="ENTENTE_QUALITE" filterProperty="ENTENTE_QUALITE"
+                    sortProperty="ENTENTE_QUALITE"
+                    filterProperty="ENTENTE_QUALITE"
                 >
                     <Label
                         id="labelEntenteQualite"
@@ -157,11 +170,72 @@
                     </table:template>
                 </table:Column>
 
+                <!-- CATEGORIE_FOURNISSEUR -->
+                <table:Column
+                    id="columnCategorieFournisseurold"
+                    width="11rem"
+                    sortProperty="CATEGORIE_FOURNISSEUR"
+                    filterProperty="CATEGORIE_FOURNISSEUR"
+                >
+                    <Label
+                        id="labelCategorieFournisseurold"
+                        text="{i18n>CATEGORIE_FOURNISSEUR_OLD}"
+                    />
+                    <table:template>
+                        <Text
+                            id="textCategorieFournisseurold"
+                            text="{CATEGORIE_FOURNISSEUR_OLD}"
+                            wrapping="false"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- QUALIFICATION -->
+                <table:Column
+                    id="columnQualificationold"
+                    width="11rem"
+                    sortProperty="QUALIFICATION"
+                    filterProperty="QUALIFICATION"
+                >
+                    <Label
+                        id="labelQualificationold"
+                        text="{i18n>QUALIFICATION_OLD}"
+                    />
+                    <table:template>
+                        <Text
+                            id="textQualificationold"
+                            text="{QUALIFICATION_OLD}"
+                            wrapping="false"
+                        />
+                    </table:template>
+                </table:Column>
+
+                <!-- ENTENTE_QUALITE -->
+                <table:Column
+                    id="columnEntenteQualiteold"
+                    width="11rem"
+                    sortProperty="ENTENTE_QUALITE"
+                    filterProperty="ENTENTE_QUALITE"
+                >
+                    <Label
+                        id="labelEntenteQualiteold"
+                        text="{i18n>ENTENTE_QUALITE_OLD}"
+                    />
+                    <table:template>
+                        <Text
+                            id="textEntenteQualiteold"
+                            text="{ENTENTE_QUALITE_OLD}"
+                            wrapping="false"
+                        />
+                    </table:template>
+                </table:Column>
+
                 <!-- Ernam -->
                 <table:Column
                     id="columnErnam"
                     width="11rem"
-                    sortProperty="Ernam" filterProperty="Ernam"
+                    sortProperty="Ernam"
+                    filterProperty="Ernam"
                 >
                     <Label
                         id="labelErnam"
@@ -180,7 +254,8 @@
                 <table:Column
                     id="columnErdat"
                     width="11rem"
-                    sortProperty="Erdat" filterProperty="Erdat"
+                    sortProperty="Erdat"
+                    filterProperty="Erdat"
                 >
                     <Label
                         id="labelErdat"
@@ -194,45 +269,6 @@
                         />
                     </table:template>
                 </table:Column>
-
-                 <!-- Usnam -->
-                <table:Column
-                    id="columnUsnam"
-                    width="11rem"
-                    sortProperty="Usnam" filterProperty="Usnam"
-                >
-                    <Label
-                        id="labelUsnam"
-                        text="{i18n>Usnam}"
-                    />
-                    <table:template>
-                        <Text
-                            id="textUsnam"
-                            text="{Usnam}"
-                            wrapping="false"
-                        />
-                    </table:template>
-                </table:Column>
-
-                <!-- Aedat -->
-                <table:Column
-                    id="columnAedat"
-                    width="11rem"
-                    sortProperty="Aedat" filterProperty="Aedat"
-                >
-                    <Label
-                        id="labelAedat"
-                        text="{i18n>Aedat}"
-                    />
-                    <table:template>
-                        <Text
-                            id="textAedat"
-                            text="{path: 'Aedat', formatter: '.formatDate'}"
-                            wrapping="false"
-                        />
-                    </table:template>
-                </table:Column>
-
             </table:columns>
         </table:Table>
 

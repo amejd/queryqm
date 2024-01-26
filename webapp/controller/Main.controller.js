@@ -33,11 +33,7 @@ sap.ui.define([
                     sClass && Filters.push(
                         that._onGetFilters(sClass, "class")
                     )
-                    // sKlart && Filters.push(
-                    //     that._onGetFilters(sKlart, "klart")
-                    // )
 
-                    // 
                     // READ DATA FROM THE SERVICE
                     const oModel = that.getOwnerComponent().getModel()
                     oModel.read('/ZC_QueryVendor', {
@@ -61,8 +57,8 @@ sap.ui.define([
                                     } else {
                                         return 0;
                                     }
-                                }); 
-                                
+                                });
+
                                 that.getView().byId("table").setModel(jModel);
                                 oDialog.close();
                             }
@@ -88,46 +84,36 @@ sap.ui.define([
                 var oDateFormat = DateFormat.getDateInstance({ pattern: "dd.MM.yyyy" });
                 return oDateFormat.format(new Date(oDate));
             },
-            onExtractData: function(){
+            onExtractData: function () {
+                //Open Dialog 
+                const oDialog = this.getView().byId("BusyDialog");
+                oDialog.open();
+
                 const oTable = this.getView().byId('table')
-                const oBinding = oTable.getBinding("rows")
-                let aCols = [];
-                oTable.getColumns().forEach(function (oColumn) {
-                    const sLabel = oColumn.getLabel().getText();
-                    const sPropertyName = oColumn.getTemplate().getBindingPath("text");
-                    const sWidth = oColumn.getWidth();
-                    // Assuming you have a formatter function for some columns
-                    const oCol = {
-                        label: sLabel,
-                        property: sPropertyName,
-                        type: EdmType.String, // Adjust this based on your data type
-                        template: sPropertyName, // Use formatter if available
-                        width: sWidth
-                    };
+                const oBinding = oTable.getBinding("rows");
 
-                    aCols.push(oCol);
-                });
-                console.log(aCols);
-                oBinding.oList.map((e)=>{
-                    e.Aedat = this.formatDate(e.Aedat)
-                    e.Erdat = this.formatDate(e.Erdat)
-                    return e;
-                })
-               
-                let oSettings = {
-                    workbook: {
-                        columns: aCols,
-                        hierarchyLevel: 'Level'
-                    },
-                    dataSource: oBinding,
-                    fileName: `Liste-fournisseur_${this.formatDate(new Date())}.xlsx`,
-                    worker: false // We need to disable worker because we are using a MockServer as OData Service
-                };
+                // Excel Type
+                let dataType = "application/vnd.ms-excel";
+                // Hidden Link
+                const aId = this.createId("hiddenLink")
+                let aHyperlink = document.getElementById(aId)
 
-                let oSheet = new Spreadsheet(oSettings);
-                oSheet.build().finally(function () {
-                    oSheet.destroy();
-                });
+                if (oBinding && oBinding.getLength() > 0) {
+                    // Get the User Info
+                    const xnavservice = sap.ushell && sap.ushell.Container.getService && sap.ushell.Container.getService("UserInfo")
+                    const user = xnavservice != null ? xnavservice.getFullName() : 'Unknown'
+                    const htmlCode = this._onGetHTMLCodeOfExcel(this.formatDate(new Date()), user, oBinding.oList)
+                    aHyperlink.href = `data:${dataType}, ${htmlCode}`;
+                    aHyperlink.download = `Liste_Fournisseur-${this.formatDate(new Date())}.xls`;
+                    //triggering the function
+                    aHyperlink.click();
+                    oDialog.close()
+                } else {
+                    // No data is bound
+                    MessageToast.show("No data bound ")
+                    oDialog.close();
+                    return;
+                }
             },
             onClearAllFilters: function () {
                 // Get the table
@@ -135,7 +121,7 @@ sap.ui.define([
                 const oListBinding = oTable.getBinding();
                 // Clear selection
                 oTable.clearSelection();
-               
+
                 if (oListBinding) {
                     oListBinding.aSorters = null;
                     oListBinding.aFilters = null;
@@ -147,9 +133,81 @@ sap.ui.define([
                     oTable.getColumns()[iColCounter].setFiltered(false);
                 }
 
-                // Update Binding
                 // Remove any filters
                 oListBinding.filter([]);
+            },
+            _onGetHTMLCodeOfExcel: function (pDate, pUser, pData) {
+                // Access the resource bundle
+                const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle()
+                const title = oResourceBundle.getText("titleExcel");
+                // Convert Date
+                pData = pData.map((item) => {
+                        item["Erdat"] = this.formatDate(item.Erdat);
+                    return item;
+                });
+                // Prepare HTML
+                let htmlCode = `  <div id="allfile">
+                                    <div class="container">
+                                    <h2>${title}</h2>
+                                    <p style="margin-bottom: 0px;"><b>Date&nbsp;:</b>&nbsp;${pDate}</p>
+                                    <p style="margin-top: 1px;"><b>Utilisateur&nbsp;:</b>&nbsp;${pUser}</p>
+                                    </div>
+                                    <table id="customersTable" style="font-family:arial, sans-serif;border: 1px solid black; border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                        <th style="width: 10em; border: 1px solid black;">Nom</th>
+                                        <th style="width: 10em; border: 1px solid black;">Fournisseur</th>
+                                        <th style="width: 15em; border: 1px solid black;">${oResourceBundle.getText("CATEGORIE_FOURNISSEUR")}</th>
+                                        <th style="width: 15em; border: 1px solid black;">${oResourceBundle.getText("QUALIFICATION")}</th>
+                                        <th style="width: 15em; border: 1px solid black;">${oResourceBundle.getText("ENTENTE_QUALITE")}</th>
+                                        <th style="width: 20em; border: 1px solid black;">${oResourceBundle.getText("CATEGORIE_FOURNISSEUR_OLD")}</th>
+                                        <th style="width: 20em; border: 1px solid black;">${oResourceBundle.getText("QUALIFICATION_OLD")}</th>
+                                        <th style="width: 20em; border: 1px solid black;">${oResourceBundle.getText("ENTENTE_QUALITE_OLD")}</th>
+                                        <th style="width: 10em; border: 1px solid black;">${oResourceBundle.getText("Ernam")}</th>
+                                        <th style="width: 10em; border: 1px solid black;">${oResourceBundle.getText("Erdat")}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    ${pData && pData.map((e) => {
+                                        return (
+                                            `<tr>
+                                                <td style="border: 1px solid black;text-align:center;">${e.Name1}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.Lifnr}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.CATEGORIE_FOURNISSEUR}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.QUALIFICATION}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.ENTENTE_QUALITE}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.CATEGORIE_FOURNISSEUR_OLD}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.QUALIFICATION_OLD}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.ENTENTE_QUALITE_OLD}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.Ernam}</td>
+                                                <td style="border: 1px solid black;text-align:center;">${e.Erdat}</td>
+                                            </tr>`)
+                                        }).join('')}
+                                    </tbody>
+                                    </table>
+                                </div>`
+
+
+                let fullHTML = `
+                                <!DOCTYPE html>
+                                <html lang="en">
+                                
+                                <head>
+                                  <meta charset="UTF-8">
+                                  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                  <title>ss</title>
+                                </head>
+                                <body>
+                                    ${htmlCode}
+                                </body>
+                                </html>
+                                `
+
+                htmlCode = fullHTML.replace(/ /g, "%20");
+                return htmlCode
+
+
             }
         });
     });
